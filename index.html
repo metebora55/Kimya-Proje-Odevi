@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kimya Hesaplayıcı</title>
+  <style>
+    :root {
+      --primary-color: #005b96;
+      --secondary-color: #003d66;
+      --text-color: #333;
+      --bg-color: #f4f4f4;
+      --card-bg: white;
+      --border-color: #ddd;
+      --hover-color: #f0f0f0;
+    }
+    .dark-mode {
+      --primary-color: #4a89dc;
+      --secondary-color: #3b6cb0;
+      --text-color: #f0f0f0;
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --border-color: #444;
+      --hover-color: #333;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+    }
+    .orientation-tip {
+      background: #ffcc00;
+      color: black;
+      padding: 0.5rem;
+      text-align: center;
+      font-weight: bold;
+    }
+    nav {
+      background: var(--primary-color);
+      color: white;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: relative;
+    }
+    nav button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+    nav button:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .dark-mode-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .section {
+      display: none;
+      padding: 1.5rem;
+      background: var(--card-bg);
+      margin: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .section.active {
+      display: block;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    input, select {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      background: var(--card-bg);
+      color: var(--text-color);
+    }
+    button.calc-btn {
+      padding: 0.5rem 1rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+    button.calc-btn:hover {
+      background: var(--secondary-color);
+    }
+    .result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(0,91,150,0.1);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 4px;
+    }
+    .result-value {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 0.5rem;
+      text-align: center;
+    }
+    th {
+      background-color: rgba(0,91,150,0.1);
+    }
+    tr:hover {
+      background-color: var(--hover-color);
+    }
+    .add-entry {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+      background: var(--hover-color);
+      border-radius: 8px;
+    }
+    .history-item {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      cursor: pointer;
+    }
+    .history-item:hover {
+      background-color: var(--hover-color);
+    }
+    .copy-btn {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .tabs-container {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+    .tab {
+      padding: 0.5rem 1rem;
+      background: #e0e0e0;
+      cursor: pointer;
+      border-radius: 4px 4px 0 0;
+      margin-right: 0.5rem;
+    }
+    .tab.active {
+      background: var(--primary-color);
+      color: white;
+    }
+    .solution-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .solution-card {
+      flex: 1;
+      min-width: 250px;
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--hover-color);
+    }
+    .substance-info {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 0.3rem;
+    }
+    .dark-mode .substance-info {
+      color: #aaa;
+    }
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .dark-mode-toggle {
+        position: static;
+        margin-top: 0.5rem;
+      }
+      .solution-container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orientation-tip">Mobil kullanıcılar için: Lütfen cihazınızı yatay kullanın!</div>
+
+  <nav>
+    <button onclick="showSection('common')">Yaygın Asit–Bazlar</button>
+    <button onclick="showSection('ph')">pH / pOH Hesaplama</button>
+    <button onclick="showSection('mix')">Karışım Son pH</button>
+    <button onclick="showSection('project')">Proje Bilgileri</button>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Karanlık Mod</button>
+  </nav>
+
+  <div id="common" class="section active">
+    <h2>Yaygın Asit–Baz Eşlenikleri</h2>
+    <table id="substance-table">
+      <thead>
+        <tr>
+          <th>Madde</th>
+          <th>Tür</th>
+          <th>Eşlenik</th>
+          <th>İyonlaşma</th>
+          <th>Güç</th>
+          <th>pH (0.1M)</th>
+          <th>Uygula</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+
+    <div class="add-entry">
+      <h3>Yeni Madde Ekle</h3>
+      <div class="form-group">
+        <input id="madde" placeholder="Madde Adı"/>
+      </div>
+      <div class="form-group">
+        <select id="tur">
+          <option value="h">Asit</option>
+          <option value="oh">Baz</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <input id="eslenik" placeholder="Eşlenik"/>
+      </div>
+      <div class="form-group">
+        <input id="iyon" placeholder="İyonlaşma"/>
+      </div>
+      <div class="form-group">
+        <input id="guc" placeholder="Güçlü / Zayıf"/>
+      </div>
+      <div class="form-group">
+        <input id="phdeger" type="number" step="any" placeholder="pH"/>
+      </div>
+      <div class="form-group">
+        <input id="konsantrasyon" type="number" step="any" placeholder="Molarite"/>
+      </div>
+      <button class="calc-btn" onclick="addCustomSubstance()">Ekle</button>
+    </div>
+  </div>
+
+  <div id="ph" class="section">
+    <h2>pH / pOH Hesaplama</h2>
+    
+    <div class="tabs-container">
+      <div class="tab active" onclick="switchPhTab('conc-to-ph')">Derişim → pH/pOH</div>
+      <div class="tab" onclick="switchPhTab('ph-to-conc')">pH/pOH → Derişim</div>
+    </div>
+    
+    <div id="conc-to-ph-content">
+      <div class="form-group">
+        <label>H⁺ veya OH⁻ Derişimi (mol/L):</label>
+        <input type="number" id="concentration" step="any" />
+      </div>
+      <div class="form-group">
+        <select id="ion-type">
+          <option value="h">H⁺ (Asit)</option>
+          <option value="oh">OH⁻ (Baz)</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calculatePH()">Hesapla</button>
+      <div class="result" id="ph-result"></div>
+    </div>
+    
+    <div id="ph-to-conc-content" style="display:none;">
+      <div class="form-group">
+        <label>pH veya pOH Değeri:</label>
+        <input type="number" id="ph-value" step="any" />
+      </div>
+      <div class="form-group">
+        <select id="ph-type">
+          <option value="ph">pH</option>
+          <option value="poh">pOH</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calculateConcentration()">Hesapla</button>
+      <div class="result" id="conc-result"></div>
+    </div>
+    
+    <div class="history-section">
+      <h3>Hesaplama Geçmişi</h3>
+      <div id="ph-history"></div>
+    </div>
+  </div>
+
+  <div id="mix" class="section">
+    <h2>Karışım Son pH Hesaplama</h2>
+    
+    <div class="solution-container">
+      <div class="solution-card">
+        <h3>1. Çözelti</h3>
+        <div class="form-group">
+          <label>H⁺ Derişimi (mol/L):</label>
+          <input type="number" id="conc1" step="any" />
+        </div>
+        <div class="form-group">
+          <label>Hacmi (mL):</label>
+          <input type="number" id="vol1" step="any" />
+        </div>
+      </div>
+      
+      <div class="solution-card">
+        <h3>2. Çözelti</h3>
+        <div class="form-group">
+          <label>H⁺ Derişimi (mol/L):</label>
+          <input type="number" id="conc2" step="any" />
+        </div>
+        <div class="form-group">
+          <label>Hacmi (mL):</label>
+          <input type="number" id="vol2" step="any" />
+        </div>
+      </div>
+    </div>
+    
+    <button class="calc-btn" onclick="calculateMixPH()">Hesapla</button>
+    <div class="result" id="mix-result"></div>
+  </div>
+
+  <div id="project" class="section">
+    <h2>Proje Bilgileri</h2>
+    <p><strong>Öğrenci Adı:</strong> Mete Bora ATASOY </p>
+    <p><strong>Öğretmen Adı:</strong> Durmuş Ali ÖZ </p>
+    <p><strong>Okul:</strong> Çarşamba Fen Lisesi</p>
+    <p><strong>Tarih:</strong> 24 Mayıs 2025</p>
+    <p><strong>Açıklama:</strong> Bu proje, kimya öğrencilerinin asit-baz hesaplamalarını kolayca yapabilmeleri için geliştirilmiş bir araçtır. pH/pOH hesaplamaları, yaygın asit-baz bilgileri ve karışım hesaplamalarını içerir.</p>
+  </div>
+
+  <script>
+    const defaultData = [
+      // Güçlü Asitler
+      ['HCl', 'h', 'Cl⁻', 'HCl → H⁺ + Cl⁻', 'Güçlü', 1.0, 0.1, 'Hidroklorik asit (Tuz ruhu)'],
+      ['HBr', 'h', 'Br⁻', 'HBr → H⁺ + Br⁻', 'Güçlü', 1.0, 0.1, 'Hidrobromik asit'],
+      ['HI', 'h', 'I⁻', 'HI → H⁺ + I⁻', 'Güçlü', 1.0, 0.1, 'Hidroiyodik asit'],
+      ['HNO₃', 'h', 'NO₃⁻', 'HNO₃ → H⁺ + NO₃⁻', 'Güçlü', 1.0, 0.1, 'Nitrik asit (Kezzap)'],
+      ['HClO₄', 'h', 'ClO₄⁻', 'HClO₄ → H⁺ + ClO₄⁻', 'Güçlü', 1.0, 0.1, 'Perklorik asit'],
+      ['H₂SO₄', 'h', 'HSO₄⁻', 'H₂SO₄ → H⁺ + HSO₄⁻', 'Güçlü', 0.7, 0.1, 'Sülfürik asit (Zaç yağı)'],
+      ['HSO₄⁻', 'h', 'SO₄²⁻', 'HSO₄⁻ ⇌ H⁺ + SO₄²⁻', 'Zayıf', 1.9, 0.1, 'Hidrojen sülfat iyonu'],
+      
+      // Zayıf Asitler
+      ['HF', 'h', 'F⁻', 'HF ⇌ H⁺ + F⁻', 'Zayıf', 2.1, 0.1, 'Hidroflorik asit'],
+      ['CH₃COOH', 'h', 'CH₃COO⁻', 'CH₃COOH ⇌ H⁺ + CH₃COO⁻', 'Zayıf', 2.9, 0.1, 'Asetik asit (Sirke asidi)'],
+      ['HCOOH', 'h', 'HCOO⁻', 'HCOOH ⇌ H⁺ + HCOO⁻', 'Zayıf', 2.4, 0.1, 'Formik asit (Karınca asidi)'],
+      ['H₂CO₃', 'h', 'HCO₃⁻', 'H₂CO₃ ⇌ H⁺ + HCO₃⁻', 'Zayıf', 3.7, 0.1, 'Karbonik asit'],
+      ['HCO₃⁻', 'h', 'CO₃²⁻', 'HCO₃⁻ ⇌ H⁺ + CO₃²⁻', 'Zayıf', 10.3, 0.1, 'Hidrojen karbonat (Bikarbonat)'],
+      ['H₃PO₄', 'h', 'H₂PO₄⁻', 'H₃PO₄ ⇌ H⁺ + H₂PO₄⁻', 'Zayıf', 1.5, 0.1, 'Fosforik asit'],
+      ['H₂PO₄⁻', 'h', 'HPO₄²⁻', 'H₂PO₄⁻ ⇌ H⁺ + HPO₄²⁻', 'Zayıf', 6.9, 0.1, 'Dihidrojen fosfat'],
+      ['HPO₄²⁻', 'h', 'PO₄³⁻', 'HPO₄²⁻ ⇌ H⁺ + PO₄³⁻', 'Zayıf', 12.4, 0.1, 'Hidrojen fosfat'],
+      ['H₂S', 'h', 'HS⁻', 'H₂S ⇌ H⁺ + HS⁻', 'Zayıf', 4.1, 0.1, 'Hidrojen sülfür'],
+      ['HS⁻', 'h', 'S²⁻', 'HS⁻ ⇌ H⁺ + S²⁻', 'Zayıf', 12.9, 0.1, 'Hidrojen sülfür iyonu'],
+      ['HCN', 'h', 'CN⁻', 'HCN ⇌ H⁺ + CN⁻', 'Zayıf', 5.1, 0.1, 'Hidrosiyanik asit'],
+      ['HNO₂', 'h', 'NO₂⁻', 'HNO₂ ⇌ H⁺ + NO₂⁻', 'Zayıf', 2.1, 0.1, 'Nitröz asit'],
+      ['HClO', 'h', 'ClO⁻', 'HClO ⇌ H⁺ + ClO⁻', 'Zayıf', 4.2, 0.1, 'Hipokloröz asit'],
+      ['HBrO', 'h', 'BrO⁻', 'HBrO ⇌ H⁺ + BrO⁻', 'Zayıf', 4.7, 0.1, 'Hipobromöz asit'],
+      ['HIO', 'h', 'IO⁻', 'HIO ⇌ H⁺ + IO⁻', 'Zayıf', 5.9, 0.1, 'Hipoiodöz asit'],
+      ['C₆H₅COOH', 'h', 'C₆H₅COO⁻', 'C₆H₅COOH ⇌ H⁺ + C₆H₅COO⁻', 'Zayıf', 2.9, 0.1, 'Benzoik asit'],
+      
+      // Güçlü Bazlar
+      ['NaOH', 'oh', 'Na⁺', 'NaOH → Na⁺ + OH⁻', 'Güçlü', 13.0, 0.1, 'Sodyum hidroksit (Sud kostik)'],
+      ['KOH', 'oh', 'K⁺', 'KOH → K⁺ + OH⁻', 'Güçlü', 13.0, 0.1, 'Potasyum hidroksit (Potas kostik)'],
+      ['LiOH', 'oh', 'Li⁺', 'LiOH → Li⁺ + OH⁻', 'Güçlü', 13.0, 0.1, 'Lityum hidroksit'],
+      ['RbOH', 'oh', 'Rb⁺', 'RbOH → Rb⁺ + OH⁻', 'Güçlü', 13.0, 0.1, 'Rubidyum hidroksit'],
+      ['CsOH', 'oh', 'Cs⁺', 'CsOH → Cs⁺ + OH⁻', 'Güçlü', 13.0, 0.1, 'Sezyum hidroksit'],
+      ['Ca(OH)₂', 'oh', 'Ca²⁺', 'Ca(OH)₂ → Ca²⁺ + 2OH⁻', 'Güçlü', 13.3, 0.1, 'Kalsiyum hidroksit (Sönmüş kireç)'],
+      ['Ba(OH)₂', 'oh', 'Ba²⁺', 'Ba(OH)₂ → Ba²⁺ + 2OH⁻', 'Güçlü', 13.3, 0.1, 'Baryum hidroksit'],
+      ['Sr(OH)₂', 'oh', 'Sr²⁺', 'Sr(OH)₂ → Sr²⁺ + 2OH⁻', 'Güçlü', 13.3, 0.1, 'Stronsiyum hidroksit'],
+      
+      // Zayıf Bazlar
+      ['NH₃', 'oh', 'NH₄⁺', 'NH₃ + H₂O ⇌ NH₄⁺ + OH⁻', 'Zayıf', 11.1, 0.1, 'Amonyak'],
+      ['CH₃NH₂', 'oh', 'CH₃NH₃⁺', 'CH₃NH₂ + H₂O ⇌ CH₃NH₃⁺ + OH⁻', 'Zayıf', 11.8, 0.1, 'Metilamin'],
+      ['C₂H₅NH₂', 'oh', 'C₂H₅NH₃⁺', 'C₂H₅NH₂ + H₂O ⇌ C₂H₅NH₃⁺ + OH⁻', 'Zayıf', 11.8, 0.1, 'Etilamin'],
+      ['C₅H₅N', 'oh', 'C₅H₅NH⁺', 'C₅H₅N + H₂O ⇌ C₅H₅NH⁺ + OH⁻', 'Zayıf', 9.2, 0.1, 'Piridin'],
+      ['NH₂OH', 'oh', 'NH₃OH⁺', 'NH₂OH + H₂O ⇌ NH₃OH⁺ + OH⁻', 'Zayıf', 8.0, 0.1, 'Hidroksilamin'],
+      ['N₂H₄', 'oh', 'N₂H₅⁺', 'N₂H₄ + H₂O ⇌ N₂H₅⁺ + OH⁻', 'Zayıf', 8.1, 0.1, 'Hidrazin'],
+      ['CO₃²⁻', 'oh', 'HCO₃⁻', 'CO₃²⁻ + H₂O ⇌ HCO₃⁻ + OH⁻', 'Zayıf', 11.6, 0.1, 'Karbonat iyonu'],
+      ['PO₄³⁻', 'oh', 'HPO₄²⁻', 'PO₄³⁻ + H₂O ⇌ HPO₄²⁻ + OH⁻', 'Zayıf', 13.0, 0.1, 'Fosfat iyonu'],
+      ['CN⁻', 'oh', 'HCN', 'CN⁻ + H₂O ⇌ HCN + OH⁻', 'Zayıf', 11.1, 0.1, 'Siyanür iyonu'],
+      ['NO₂⁻', 'oh', 'HNO₂', 'NO₂⁻ + H₂O ⇌ HNO₂ + OH⁻', 'Zayıf', 8.4, 0.1, 'Nitrit iyonu'],
+      ['CH₃COO⁻', 'oh', 'CH₃COOH', 'CH₃COO⁻ + H₂O ⇌ CH₃COOH + OH⁻', 'Zayıf', 8.9, 0.1, 'Asetat iyonu'],
+      ['F⁻', 'oh', 'HF', 'F⁻ + H₂O ⇌ HF + OH⁻', 'Zayıf', 8.1, 0.1, 'Florür iyonu'],
+      ['ClO⁻', 'oh', 'HClO', 'ClO⁻ + H₂O ⇌ HClO + OH⁻', 'Zayıf', 10.5, 0.1, 'Hipoklorit iyonu'],
+      ['HS⁻', 'oh', 'H₂S', 'HS⁻ + H₂O ⇌ H₂S + OH⁻', 'Zayıf', 7.0, 0.1, 'Hidrojen sülfür iyonu'],
+      ['C₆H₅O⁻', 'oh', 'C₆H₅OH', 'C₆H₅O⁻ + H₂O ⇌ C₆H₅OH + OH⁻', 'Zayıf', 11.1, 0.1, 'Fenoksit iyonu']
+    ];
+
+    // Karanlık mod kontrolü
+    function checkDarkMode() {
+      if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+      }
+    }
+
+    // Karanlık modu değiştirme
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('darkMode', 'enabled');
+      } else {
+        localStorage.setItem('darkMode', 'disabled');
+      }
+    }
+
+    // Özel maddeleri kaydetme
+    function saveCustom(data) {
+      localStorage.setItem('customSubstances', JSON.stringify(data));
+    }
+
+    // Özel maddeleri yükleme
+    function loadCustom() {
+      return JSON.parse(localStorage.getItem('customSubstances')) || [];
+    }
+
+    // Hesaplama geçmişini kaydetme
+    function saveToHistory(type, input, result) {
+      const history = JSON.parse(localStorage.getItem('calculationHistory')) || [];
+      history.unshift({
+        type: type,
+        input: input,
+        result: result,
+        timestamp: new Date().toLocaleString()
+      });
+      // En fazla 10 kayıt tut
+      if (history.length > 10) history.pop();
+      localStorage.setItem('calculationHistory', JSON.stringify(history));
+      renderHistory();
+    }
+
+    // Geçmişi görüntüleme
+    function renderHistory() {
+      const history = JSON.parse(localStorage.getItem('calculationHistory')) || [];
+      const historyEl = document.getElementById('ph-history');
+      historyEl.innerHTML = '';
+      
+      if (history.length === 0) {
+        historyEl.innerHTML = '<p>Henüz geçmiş kayıt yok.</p>';
+        return;
+      }
+      
+      history.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `
+          <p><strong>${item.type}</strong> - ${item.timestamp}</p>
+          <p>Girdi: ${item.input}</p>
+          <p>Sonuç: ${item.result} <button class="copy-btn" onclick="copyToClipboard('${item.result.replace("'", "\\'")}')">Kopyala</button></p>
+        `;
+        historyEl.appendChild(div);
+      });
+    }
+
+    // Panoya kopyalama
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Kopyalandı: ' + text);
+      });
+    }
+
+    // Tablo oluşturma
+    function renderTable() {
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+      const allData = [...defaultData, ...loadCustom()];
+      allData.forEach(([madde, tur, eslenik, iyon, guc, ph, kons, yayginAd]) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${madde}${yayginAd ? `<div class="substance-info">${yayginAd}</div>` : ''}</td>
+          <td>${tur === 'h' ? 'Asit' : 'Baz'}</td>
+          <td>${eslenik}</td>
+          <td>${iyon}</td>
+          <td>${guc}</td>
+          <td>${ph}</td>
+          <td><button class="calc-btn" onclick="useSubstance('${tur}', ${kons})">Uygula (${kons}M)</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Yeni madde ekleme
+    function addCustomSubstance() {
+      const entry = [
+        document.getElementById('madde').value,
+        document.getElementById('tur').value,
+        document.getElementById('eslenik').value,
+        document.getElementById('iyon').value,
+        document.getElementById('guc').value,
+        parseFloat(document.getElementById('phdeger').value),
+        parseFloat(document.getElementById('konsantrasyon').value),
+        '' // Yaygın ad boş
+      ];
+      
+      // Gerekli alanların dolu olduğunu kontrol et
+      if (!entry[0] || !entry[2] || !entry[3] || !entry[4] || isNaN(entry[5]) || isNaN(entry[6])) {
+        alert('Lütfen tüm alanları doldurun ve geçerli sayılar girin!');
+        return;
+      }
+      
+      const existing = loadCustom();
+      existing.push(entry);
+      saveCustom(existing);
+      renderTable();
+      
+      // Formu temizle
+      document.getElementById('madde').value = '';
+      document.getElementById('eslenik').value = '';
+      document.getElementById('iyon').value = '';
+      document.getElementById('guc').value = '';
+      document.getElementById('phdeger').value = '';
+      document.getElementById('konsantrasyon').value = '';
+    }
+
+    // Maddeyi pH hesaplama bölümüne uygula
+    function useSubstance(tur, kons) {
+      document.getElementById('ion-type').value = tur;
+      document.getElementById('concentration').value = kons;
+      showSection('ph');
+      switchPhTab('conc-to-ph');
+    }
+
+    // pH hesaplama
+    function calculatePH() {
+      const conc = parseFloat(document.getElementById('concentration').value);
+      const ion = document.getElementById('ion-type').value;
+      let result = '';
+      
+      if (conc > 0) {
+        if (ion === 'h') {
+          const ph = -Math.log10(conc);
+          const poh = 14 - ph;
+          result = `pH: <span class="result-value">${ph.toFixed(2)}</span> | pOH: <span class="result-value">${poh.toFixed(2)}</span>`;
+        } else {
+          const poh = -Math.log10(conc);
+          const ph = 14 - poh;
+          result = `pOH: <span class="result-value">${poh.toFixed(2)}</span> | pH: <span class="result-value">${ph.toFixed(2)}</span>`;
+        }
+        saveToHistory('Derişim → pH/pOH', `${conc} M ${ion==='h'?'H⁺':'OH⁻'}`, result.replace(/<[^>]*>/g, ''));
+      } else {
+        result = "Geçerli bir derişim giriniz.";
+      }
+      document.getElementById('ph-result').innerHTML = result;
+    }
+
+    // Derişim hesaplama
+    function calculateConcentration() {
+      const phValue = parseFloat(document.getElementById('ph-value').value);
+      const phType = document.getElementById('ph-type').value;
+      let result = '';
+      
+      if (!isNaN(phValue)) {
+        if (phType === 'ph') {
+          const conc = Math.pow(10, -phValue);
+          result = `H⁺ derişimi: <span class="result-value">${conc.toExponential(2)} mol/L</span>`;
+        } else {
+          const conc = Math.pow(10, -phValue);
+          result = `OH⁻ derişimi: <span class="result-value">${conc.toExponential(2)} mol/L</span>`;
+        }
+        saveToHistory('pH/pOH → Derişim', `${phType} = ${phValue}`, result.replace(/<[^>]*>/g, ''));
+      } else {
+        result = "Geçerli bir pH/pOH değeri giriniz.";
+      }
+      document.getElementById('conc-result').innerHTML = result;
+    }
+
+    // Karışım pH hesaplama
+    function calculateMixPH() {
+      const c1 = parseFloat(document.getElementById('conc1').value);
+      const v1 = parseFloat(document.getElementById('vol1').value);
+      const c2 = parseFloat(document.getElementById('conc2').value);
+      const v2 = parseFloat(document.getElementById('vol2').value);
+      
+      if (c1 > 0 && v1 > 0 && c2 > 0 && v2 > 0) {
+        const totalMol = (c1 * v1 + c2 * v2) / 1000; // mL'yi L'ye çevir
+        const totalVol = (v1 + v2) / 1000; // mL'yi L'ye çevir
+        const finalConc = totalMol / totalVol;
+        const ph = -Math.log10(finalConc);
+        const resultText = `Karışım pH: <span class="result-value">${ph.toFixed(2)}</span> (${finalConc.toExponential(2)} M H⁺)`;
+        document.getElementById('mix-result').innerHTML = resultText;
+        saveToHistory('Karışım pH', `${c1}M ${v1}mL + ${c2}M ${v2}mL`, resultText.replace(/<[^>]*>/g, ''));
+      } else {
+        document.getElementById('mix-result').textContent = "Tüm değerleri pozitif giriniz.";
+      }
+    }
+
+    // pH hesaplama sekmesini değiştirme
+    function switchPhTab(tabId) {
+      document.querySelectorAll('.tabs-container .tab').forEach(tab => tab.classList.remove('active'));
+      document.getElementById('conc-to-ph-content').style.display = 'none';
+      document.getElementById('ph-to-conc-content').style.display = 'none';
+      
+      if (tabId === 'conc-to-ph') {
+        document.querySelector('.tabs-container .tab:nth-child(1)').classList.add('active');
+        document.getElementById('conc-to-ph-content').style.display = 'block';
+      } else {
+        document.querySelector('.tabs-container .tab:nth-child(2)').classList.add('active');
+        document.getElementById('ph-to-conc-content').style.display = 'block';
+      }
+    }
+
+    // Bölüm gösterme
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // Sayfa yüklendiğinde çalışacaklar
+    window.onload = function() {
+      checkDarkMode();
+      renderTable();
+      renderHistory();
+      switchPhTab('conc-to-ph');
+    };
+  </script>
+
+</body>
+</html>
