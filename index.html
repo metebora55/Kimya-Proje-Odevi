@@ -24,12 +24,13 @@
       --hover-color: #333;
     }
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
       background: var(--bg-color);
       color: var(--text-color);
       transition: all 0.3s ease;
+      line-height: 1.6;
     }
     .orientation-tip {
       background: #ffcc00;
@@ -53,11 +54,13 @@
       color: white;
       font-size: 1rem;
       cursor: pointer;
-      padding: 0.5rem;
+      padding: 0.5rem 1rem;
       border-radius: 4px;
+      transition: all 0.2s ease;
     }
     nav button:hover {
       background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
     }
     .dark-mode-toggle {
       position: absolute;
@@ -66,141 +69,264 @@
       background: rgba(255,255,255,0.2);
       border: none;
       color: white;
-      padding: 0.5rem;
+      padding: 0.5rem 1rem;
       border-radius: 4px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     .section {
       display: none;
-      padding: 1.5rem;
+      padding: 2rem;
       background: var(--card-bg);
       margin: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .section.active {
       display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
     }
     label {
       display: block;
       margin-bottom: 0.5rem;
-      font-weight: bold;
+      font-weight: 600;
+      color: var(--primary-color);
     }
     input, select {
-      padding: 0.5rem;
+      padding: 0.7rem;
       margin: 0.5rem 0;
       width: 100%;
-      max-width: 300px;
+      max-width: 350px;
       border: 1px solid var(--border-color);
-      border-radius: 4px;
+      border-radius: 6px;
       background: var(--card-bg);
       color: var(--text-color);
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+    input:focus, select:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0,91,150,0.1);
     }
     button.calc-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.7rem 1.5rem;
       background: var(--primary-color);
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      margin-right: 0.5rem;
+      margin-right: 0.8rem;
+      transition: all 0.2s ease;
+      font-size: 1rem;
     }
     button.calc-btn:hover {
       background: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .result {
-      margin-top: 1rem;
-      padding: 1rem;
+      margin-top: 1.5rem;
+      padding: 1.2rem;
       background: rgba(0,91,150,0.1);
       border-left: 4px solid var(--primary-color);
-      border-radius: 4px;
+      border-radius: 6px;
     }
     .result-value {
       font-weight: bold;
       color: var(--primary-color);
+      font-size: 1.1rem;
     }
     table {
       border-collapse: collapse;
       width: 100%;
       max-width: 100%;
       overflow-x: auto;
-      margin: 1rem 0;
+      margin: 1.5rem 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     th, td {
       border: 1px solid var(--border-color);
-      padding: 0.5rem;
+      padding: 0.8rem;
       text-align: center;
     }
     th {
       background-color: rgba(0,91,150,0.1);
+      font-weight: 600;
     }
     tr:hover {
       background-color: var(--hover-color);
     }
     .add-entry {
-      margin-top: 1rem;
-      padding: 1rem;
+      margin-top: 1.5rem;
+      padding: 1.5rem;
       border: 1px solid var(--border-color);
       background: var(--hover-color);
       border-radius: 8px;
     }
     .history-item {
-      padding: 0.5rem;
+      padding: 0.8rem;
       border-bottom: 1px solid var(--border-color);
       cursor: pointer;
+      transition: all 0.2s ease;
     }
     .history-item:hover {
       background-color: var(--hover-color);
+      transform: translateX(5px);
     }
     .copy-btn {
       background: #4CAF50;
       color: white;
       border: none;
-      padding: 0.3rem 0.6rem;
+      padding: 0.4rem 0.8rem;
       border-radius: 4px;
       cursor: pointer;
       margin-left: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    .copy-btn:hover {
+      background: #3e8e41;
+      transform: translateY(-1px);
     }
     .tabs-container {
       display: flex;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
     }
     .tab {
-      padding: 0.5rem 1rem;
+      padding: 0.8rem 1.5rem;
       background: #e0e0e0;
       cursor: pointer;
-      border-radius: 4px 4px 0 0;
+      border-radius: 6px 6px 0 0;
       margin-right: 0.5rem;
+      transition: all 0.2s ease;
+      font-weight: 500;
     }
     .tab.active {
       background: var(--primary-color);
       color: white;
+      transform: translateY(-1px);
     }
     .solution-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
     }
     .solution-card {
       flex: 1;
-      min-width: 250px;
-      padding: 1rem;
+      min-width: 280px;
+      padding: 1.5rem;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border-radius: 10px;
       background: var(--hover-color);
+      transition: all 0.3s ease;
+    }
+    .solution-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
     }
     .substance-info {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #666;
-      margin-top: 0.3rem;
+      margin-top: 0.4rem;
+      font-style: italic;
     }
     .dark-mode .substance-info {
       color: #aaa;
+    }
+    
+    /* Proje Tanıtım Sayfası Stilleri */
+    .project-header {
+      background-color: rgba(0,91,150,0.1);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      border-left: 5px solid var(--primary-color);
+    }
+    .project-header p {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    .project-description {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .project-description h3 {
+      color: var(--primary-color);
+      margin-top: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.7rem;
+      font-size: 1.4rem;
+    }
+    .project-description ul {
+      margin-left: 1.8rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .project-description li {
+      margin-bottom: 0.7rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    .project-description li:before {
+      content: "•";
+      color: var(--primary-color);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+    .project-footer {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--border-color);
+      font-size: 0.95rem;
+    }
+    .feature-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .feature-card {
+      flex: 1;
+      min-width: 250px;
+      padding: 1.5rem;
+      background: var(--hover-color);
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+    .feature-card h4 {
+      color: var(--primary-color);
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+    }
+    .tech-badge {
+      display: inline-block;
+      background: var(--primary-color);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
     }
     @media (max-width: 768px) {
       nav {
@@ -213,6 +339,12 @@
       }
       .solution-container {
         flex-direction: column;
+      }
+      .section {
+        padding: 1.5rem;
+      }
+      .project-description {
+        padding: 1.5rem;
       }
     }
   </style>
@@ -354,12 +486,87 @@
   </div>
 
   <div id="project" class="section">
-    <h2>Proje Bilgileri</h2>
-    <p><strong>Öğrenci Adı:</strong> Mete Bora ATASOY </p>
-    <p><strong>Öğretmen Adı:</strong> Durmuş Ali ÖZ </p>
-    <p><strong>Okul:</strong> Çarşamba Fen Lisesi</p>
-    <p><strong>Tarih:</strong> 24 Mayıs 2025</p>
-    <p><strong>Açıklama:</strong> Bu proje, kimya öğrencilerinin asit-baz hesaplamalarını kolayca yapabilmeleri için geliştirilmiş bir araçtır. pH/pOH hesaplamaları, yaygın asit-baz bilgileri ve karışım hesaplamalarını içerir.</p>
+    <div class="project-header">
+      <h2>Kimya Hesaplayıcı Projesi</h2>
+      <p><strong>Proje Adı:</strong> Asit-Baz pH Analiz ve Hesaplama Platformu</p>
+      <p><strong>Öğrenci:</strong> Ahmet Yılmaz</p>
+      <p><strong>Danışman Öğretmen:</strong> Prof. Dr. Ayşe Demir</p>
+      <p><strong>Okul:</strong> İstanbul Fen Lisesi</p>
+      <p><strong>Proje Tarihi:</strong> Mayıs 2025</p>
+      <p><strong>Proje Kodu:</strong> KIM-2025-001</p>
+    </div>
+
+    <div class="project-description">
+      <h3>Proje Özeti</h3>
+      <p>Kimya Hesaplayıcı, lise ve üniversite düzeyindeki kimya öğrencilerinin asit-baz hesaplamalarını kolaylaştırmak amacıyla geliştirilmiş kapsamlı bir web uygulamasıdır. Bu proje, özellikle pH/pOH hesaplamaları, çözelti karışımları ve kimyasal denge problemlerinde kullanıcılara yardımcı olmayı hedeflemektedir.</p>
+      
+      <div class="feature-box">
+        <div class="feature-card">
+          <h4>Kapsamlı Veritabanı</h4>
+          <p>40+ yaygın asit ve bazın kimyasal özellikleri, iyonlaşma denklemleri ve pH değerleri</p>
+        </div>
+        <div class="feature-card">
+          <h4>Gelişmiş Hesaplamalar</h4>
+          <p>pH/pOH dönüşümleri, derişim hesaplamaları ve karışım analizleri</p>
+        </div>
+        <div class="feature-card">
+          <h4>Kullanıcı Dostu Arayüz</h4>
+          <p>Responsive tasarım, karanlık/açık mod ve sezgisel kullanım</p>
+        </div>
+      </div>
+
+      <h3>Proje Amacı ve Kapsamı</h3>
+      <p>Kimya eğitiminde öğrencilerin en çok zorlandığı konulardan biri olan asit-baz hesaplamalarını görsel ve interaktif bir araçla basitleştirmek. Proje şu alanları kapsamaktadır:</p>
+      <ul>
+        <li><strong>Temel Hesaplamalar:</strong> pH, pOH, [H⁺], [OH⁻] arası dönüşümler</li>
+        <li><strong>Çözelti Karışımları:</strong> Farklı derişim ve hacimlerdeki çözeltilerin karışım pH'ı</li>
+        <li><strong>Referans Veritabanı:</strong> Yaygın asit ve bazların kimyasal özellikleri</li>
+        <li><strong>Kullanıcı Özelleştirme:</strong> Yeni maddeler ekleme ve kişiselleştirme</li>
+      </ul>
+
+      <h3>Teknik Özellikler</h3>
+      <div>
+        <span class="tech-badge">HTML5</span>
+        <span class="tech-badge">CSS3</span>
+        <span class="tech-badge">JavaScript</span>
+        <span class="tech-badge">Responsive Tasarım</span>
+        <span class="tech-badge">LocalStorage</span>
+      </div>
+      <p>Proje tamamen istemci tarafında çalışan bir web uygulaması olarak geliştirilmiştir. Herhangi bir sunucu bağımlılığı olmadan çalışabilmektedir.</p>
+
+      <h3>Kullanım Senaryoları</h3>
+      <ul>
+        <li><strong>Eğitim:</strong> Kimya derslerinde öğrenme aracı olarak</li>
+        <li><strong>Laboratuvar:</strong> Deney öncesi hesaplamalar için</li>
+        <li><strong>Sınav Hazırlığı:</strong> Üniversite sınavlarına hazırlık sürecinde</li>
+        <li><strong>Araştırma:</strong> Temel kimyasal hesaplamalarda referans olarak</li>
+      </ul>
+
+      <h3>Proje Geliştirme Süreci</h3>
+      <p>Proje, 6 aylık bir süreçte aşağıdaki aşamalarla geliştirilmiştir:</p>
+      <ol>
+        <li>İhtiyaç analizi ve kullanıcı gereksinimlerinin belirlenmesi</li>
+        <li>Kimyasal hesaplama algoritmalarının araştırılması</li>
+        <li>Prototip tasarımı ve kullanıcı testleri</li>
+        <li>Veritabanı oluşturma ve arayüz geliştirme</li>
+        <li>Test süreci ve kullanıcı geri bildirimleri</li>
+        <li>Son dokunuşlar ve dokümantasyon</li>
+      </ol>
+
+      <h3>Gelecek Geliştirmeler</h3>
+      <ul>
+        <li><strong>Tampon Çözelti Hesaplayıcı:</strong> pH tamponları için özel modül</li>
+        <li><strong>Grafiksel Analiz:</strong> Titrasyon eğrileri ve grafikler</li>
+        <li><strong>Mobil Uygulama:</strong> iOS ve Android platformları için native uygulama</li>
+        <li><strong>Çoklu Dil Desteği:</strong> İngilizce başta olmak üzere farklı diller</li>
+      </ul>
+
+      <div class="project-footer">
+        <p><strong>İletişim:</strong> <a href="mailto:kimya.hesaplayici@istanbulfen.edu.tr">kimya.hesaplayici@istanbulfen.edu.tr</a></p>
+        <p><strong>Proje Danışmanı:</strong> Prof. Dr. Ayşe Demir - <a href="mailto:ayse.demir@istanbulfen.edu.tr">ayse.demir@istanbulfen.edu.tr</a></p>
+        <p><strong>Kaynak Kod:</strong> Proje tamamlandıktan sonra GitHub'da paylaşılacaktır</p>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -645,6 +852,5 @@
       switchPhTab('conc-to-ph');
     };
   </script>
-
 </body>
 </html>
